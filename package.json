@@ -1,15 +1,16 @@
 {
   "name": "lambda",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Discord Bot",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsx src/index.ts",
+    "build": "tsc"
   },
   "keywords": [],
-  "author": "",
+  "author": "First commiter: Rerurate_514, Project team: softtechtohtech.work",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "discord.js": "^14.26.2"
   },
