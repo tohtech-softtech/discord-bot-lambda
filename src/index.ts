@@ -1,15 +1,32 @@
-// テスト用：トークン不要の動作確認コード
-const test = async () => {
-    console.log("TypeScriptのビルド環境は正常です。");
+import { Client, Collection, GatewayIntentBits, Events } from 'discord.js';
+import * as pingCommand from './commands/botest/ping.js';
 
-    // ライブラリの読み込みテスト
-    const version = "14.26.2";
-    console.log(`Discord.js バージョン: ${version}`);
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
-    console.log("ボットの初期化処理をシミュレートします...");
-    await new Promise(resolve => setTimeout(resolve, 1000));
+const commands = new Collection<string, any>();
+commands.set(pingCommand.data.name, pingCommand);
 
-    console.log("すべて正常に動作しました。環境構築は完了です。");
-};
+client.once(Events.ClientReady, () => {
+    console.log(`Ready! Logged in as ${client.user?.tag}`);
+});
 
-test().catch(console.error);
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
+
+    const command = commands.get(interaction.commandName);
+    if (!command) return;
+
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+
+        if (interaction.replied || interaction.deferred) {
+            await interaction.followUp({ content: 'エラーが発生しました', ephemeral: true });
+        } else {
+            await interaction.reply({ content: 'エラーが発生しました', ephemeral: true });
+        }
+    }
+});
+
+await client.login(process.env.DISCORD_TOKEN);
