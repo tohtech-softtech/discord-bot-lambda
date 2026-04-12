@@ -1,12 +1,14 @@
 import { REST, Routes } from 'discord.js';
 import * as pingCommand from './commands/botest/ping.js';
 import * as onBoardingRoleCommand from './commands/onboarding/add-yearify-role.js';
+import * as interestCommand from './commands/onboarding/add-interest-role.js';
 
 //npx tsx --env-file=.env src/deploy-commands.tsでデプロイ
 
 const commands = [
     pingCommand.data.toJSON(),
-    onBoardingRoleCommand.data.toJSON()
+    onBoardingRoleCommand.data.toJSON(),
+    interestCommand.data.toJSON()
 ];
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN!);
 

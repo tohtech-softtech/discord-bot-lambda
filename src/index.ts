@@ -1,13 +1,14 @@
 import { Client, Collection, GatewayIntentBits, Events } from 'discord.js';
 import * as pingCommand from './commands/botest/ping.js';
 import * as onBoardingRoleCommand from './commands/onboarding/add-yearify-role.js';
-import { roleButtons } from './commands/onboarding/add-yearify-role.js';
+import * as onBoardingInterestCommand from './commands/onboarding/add-interest-role.js';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 const commands = new Collection<string, any>();
 commands.set(pingCommand.data.name, pingCommand);
 commands.set(onBoardingRoleCommand.data.name, onBoardingRoleCommand);
+commands.set(onBoardingInterestCommand.data.name, onBoardingInterestCommand);
 
 client.once(Events.ClientReady, () => {
     console.log(`Ready! Logged in as ${client.user?.tag}`);
@@ -30,8 +31,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
             }
         }
     }
-    else if (interaction.isButton()) {
-        const btnConfig = roleButtons.find(b => b.customId === interaction.customId);
+
+    const allRoleButtons = [...onBoardingRoleCommand.roleButtons, ...onBoardingInterestCommand.interestButtons];
+
+    if (interaction.isButton()) {
+        const btnConfig = allRoleButtons.find(b => b.customId === interaction.customId);
         if (!btnConfig) return;
 
         const member = interaction.guild?.members.cache.get(interaction.user.id);
@@ -43,12 +47,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
         }
 
         if (member.roles.cache.has(role.id)) {
-            await interaction.reply({ content: `すでに ${role.name} を持っています。`, ephemeral: true });
-            return;
+            await member.roles.remove(role);
+            await interaction.reply({ content: `✅ ${role.name} を撤回しました。`, ephemeral: true });
+        } else {
+            await member.roles.add(role);
+            await interaction.reply({ content: `✅ ${role.name} を付与しました！`, ephemeral: true });
         }
-
-        await member.roles.add(role);
-        await interaction.reply({ content: `✅ ${role.name} を付与しました！`, ephemeral: true });
     }
 });
 
