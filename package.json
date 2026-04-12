@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "build": "tsc",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "deploy": "npx tsx --env-file=.env src/deploy-commands.ts"
   },
   "keywords": [],
   "author": "First commiter: Rerurate_514, Project team: softtechtohtech.work",

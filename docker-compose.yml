@@ -4,5 +4,9 @@ services:
     restart: always
     env_file:
       - .env
+    command: >
+      sh -c "npx tsx --env-file=.env src/deploy-commands.ts && node dist/index.js"
     volumes:
+      - .:/app
+      - /app/node_modules
       - ./data:/app/data
