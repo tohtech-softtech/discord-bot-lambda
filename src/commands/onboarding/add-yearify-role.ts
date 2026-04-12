@@ -7,15 +7,12 @@ import {
     ButtonStyle,
 } from 'discord.js';
 
-const rawRoles = process.env.YEAR_ROLE_MAPPING || "";
-export const roleButtons = rawRoles.split(',').map(entry => {
-    const [label, roleId] = entry.split(':');
-    return {
-        customId: `role-${label}`,
-        label: `${label}年度入学`,
-        roleId: roleId
-    };
-});
+export const roleButtons = [
+    { customId: 'role_year_2023', label: '2023年度入学', roleId: process.env.ROLE_YEAR_2023! },
+    { customId: 'role_year_2024', label: '2024年度入学', roleId: process.env.ROLE_YEAR_2024! },
+    { customId: 'role_year_2025', label: '2025年度入学', roleId: process.env.ROLE_YEAR_2025! },
+    { customId: 'role_year_2026', label: '2026年度入学', roleId: process.env.ROLE_YEAR_2026! },
+];
 
 export const data = new SlashCommandBuilder()
     .setName("onboarding-add-yearify-role")
