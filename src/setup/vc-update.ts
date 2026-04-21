@@ -1,4 +1,4 @@
-import { Events, TextChannel, VoiceState, EmbedBuilder, Colors } from "discord.js";
+import { Events, TextChannel, VoiceState, EmbedBuilder } from "discord.js";
 import { client } from "./client.js";
 
 client.on(Events.VoiceStateUpdate, async (oldState: VoiceState, newState: VoiceState) => {
@@ -14,6 +14,8 @@ client.on(Events.VoiceStateUpdate, async (oldState: VoiceState, newState: VoiceS
 
     const avatarURL = member?.user.displayAvatarURL({ size: 64 }) ?? undefined;
     const now = new Date();
+
+    console.log((!oldChannel && newChannel));
 
     if (!oldChannel && newChannel) {
         const embed = new EmbedBuilder()
@@ -45,9 +47,7 @@ client.on(Events.VoiceStateUpdate, async (oldState: VoiceState, newState: VoiceS
                 text: `ユーザーID: ${member?.id ?? "不明"}`,
             })
             .setTimestamp(now);
-
-        (targetChannel as TextChannel).send({ embeds: [embed] });
-
+        await (targetChannel as TextChannel).send({ embeds: [embed] }).catch(console.error);
     } else if (oldChannel && !newChannel) {
         const embed = new EmbedBuilder()
             .setColor(0xed4245)
@@ -79,6 +79,6 @@ client.on(Events.VoiceStateUpdate, async (oldState: VoiceState, newState: VoiceS
             })
             .setTimestamp(now);
 
-        (targetChannel as TextChannel).send({ embeds: [embed] });
+        await (targetChannel as TextChannel).send({ embeds: [embed] }).catch(console.error);
     }
 });
