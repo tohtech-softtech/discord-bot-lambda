@@ -80,38 +80,5 @@ client.on(Events.VoiceStateUpdate, async (oldState: VoiceState, newState: VoiceS
             .setTimestamp(now);
 
         (targetChannel as TextChannel).send({ embeds: [embed] });
-    } 
-    // else if (oldChannel && newChannel && oldChannel.id !== newChannel.id) {
-    //     const embed = new EmbedBuilder()
-    //         .setColor(0xfee75c) // Discord Yellow
-    //         .setAuthor({
-    //             name: member?.displayName ?? "Unknown",
-    //             iconURL: avatarURL,
-    //         })
-    //         .setTitle("🟡  チャンネルを移動しました")
-    //         .addFields(
-    //             {
-    //                 name: "📤  移動元",
-    //                 value: `**${oldChannel.name}**`,
-    //                 inline: true,
-    //             },
-    //             {
-    //                 name: "➡️",
-    //                 value: "\u200b",
-    //                 inline: true,
-    //             },
-    //             {
-    //                 name: "📥  移動先",
-    //                 value: `**${newChannel.name}**`,
-    //                 inline: true,
-    //             }
-    //         )
-    //         .setThumbnail(avatarURL ?? null)
-    //         .setFooter({
-    //             text: `ユーザーID: ${member?.id ?? "不明"}`,
-    //         })
-    //         .setTimestamp(now);
-
-    //     (targetChannel as TextChannel).send({ embeds: [embed] });
-    // }
+    }
 });
